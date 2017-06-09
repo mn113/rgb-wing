@@ -30,6 +30,14 @@ $(function() {
 		},
 
 		move: function(dx, dy) {
+			// Check against page bounds:
+			var x = parseInt(ship.el.css("left")),
+				y = parseInt(ship.el.css("top"));
+			if (x + dx < 0 || x + dx + 40 > $(window).width()) dx = 0;
+			if (y + dy < 0 || y + dy + 42 > $(window).height()) dy = 0;
+			console.log($(window).width(), $(window).height());
+			console.log(x,dx,y,dy);
+
 			ship.el.css({
 				left: "+="+dx+"px",
 				top: "+="+dy+"px"
