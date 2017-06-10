@@ -4,99 +4,104 @@ body {
 }
 
 .red {
-  color: red;
+	color: red;
 }
 
 .green {
-  color: lawngreen;
+	color: lawngreen;
 }
 
 .blue {
-  color: dodgerblue;
+	color: dodgerblue;
 }
 
 #space {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: black;
-  transition: background-color 5s;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background: black;
+	transition: background-color 5s;
 }
 #space > * {
-  position: absolute;
+	position: absolute;
 }
 #space .stars {
-  width: 100vw;
-  height: 100vh;
-  background: url(https://marthost.uk/rgbwing/stars.png) 0 0 repeat;
+	width: 100vw;
+	height: 100vh;
+	background: url(https://marthost.uk/rgbwing/stars.png) 0 0 repeat;
 }
 #space #s1 {
-  xanimation: vflow 11s linear infinite;
+	xanimation: vflow 11s linear infinite;
 }
 #space #s2 {
-  xanimation: vflow2 17s linear infinite;
+	xanimation: vflow2 17s linear infinite;
 }
 @keyframes vflow {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 100%;
-  }
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 0 100%;
+	}
 }
 @keyframes vflow2 {
-  from {
-    background-position: 100px 0;
-  }
-  to {
-    background-position: 100px 100%;
-  }
+	from {
+		background-position: 100px 0;
+	}
+	to {
+		background-position: 100px 100%;
+	}
 }
 #space #ship {
-  top: 50%;
-  left: 50%;
-  background: white url(https://marthost.uk/rgbwing/myship-trans.png) no-repeat;
-  -webkit-mask-image: url(https://marthost.uk/rgbwing/myship.png);
-  width: 60px;
-  height: 64px;
-  color: #808080;
+	top: 50%;
+	left: 50%;
+	background: white url(https://marthost.uk/rgbwing/myship-trans.png) no-repeat;
+	-webkit-mask-image: url(https://marthost.uk/rgbwing/myship.png);
+	width: 60px;
+	height: 64px;
+	color: #808080;
+	transform-style: preserve-3d;
 }
 #space #ship:after {
-  content: "";
-  background: url(https://marthost.uk/rgbwing/booster.png) repeat-x;
-  position: absolute;
-  top: 59px;
-  left: 21px;
-  width: 18px;
-  height: 20px;
+	content: "";
+	background: url(https://marthost.uk/rgbwing/booster.png) repeat-x;
+	position: absolute;
+	top: 59px;
+	left: 21px;
+	width: 18px;
+	height: 20px;
+}
+.rolling {
+	transition: transform 0.6s;
+	transform: rotateY(360deg);
 }
 #space .blast {
-  width: 16px;
-  height: 20px;
-  background: url(https://marthost.uk/rgbwing/blast.png) no-repeat;
+	width: 16px;
+	height: 20px;
+	background: url(https://marthost.uk/rgbwing/blast.png) no-repeat;
 }
 #space #message {
-  width: 100%;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 4em;
-  font-weight: bold;
-  text-align: center;
-  text-shadow: black 0 0 1px, black 0 0 1px, black 0 0 1px, black 0 0 1px;
-  margin-top: 1em;
+	width: 100%;
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 4em;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: black 0 0 1px, black 0 0 1px, black 0 0 1px, black 0 0 1px;
+	margin-top: 1em;
 }
 #space #help {
-  color: white;
-  bottom: 0;
+	color: white;
+	bottom: 0;
 }
 #space kbd {
-  background-clip: border;
-  background-inline-policy: continuous;
-  background-origin: padding;
-  background: #EEEEEE none repeat scroll 0 0;
-  border-color: #CCCCCC #AAAAAA #888888 #BBBBBB;
-  border-style: solid;
-  border-width: 1px 1px 2px 2px;
-  color: #000000;
-  padding: 2px 1px;
-  white-space: nowrap;
+	background-clip: border;
+	background-inline-policy: continuous;
+	background-origin: padding;
+	background: #EEEEEE none repeat scroll 0 0;
+	border-color: #CCCCCC #AAAAAA #888888 #BBBBBB;
+	border-style: solid;
+	border-width: 1px 1px 2px 2px;
+	color: #000000;
+	padding: 2px 1px;
+	white-space: nowrap;
 }

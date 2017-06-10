@@ -9,43 +9,60 @@ $(function() {
 			g: 128,
 			b: 128
 		},
+		health: 100,
 		cloaked: false,
 
 		alterColour: function(channel, delta) {
-			ship.colour[channel] += delta;
+			this.colour[channel] += delta;
 			// Keep values within 0-255:
-			if (ship.colour[channel] > 255) ship.colour[channel] = 255;
-			if (ship.colour[channel] < 0) ship.colour[channel] = 0;
+			if (this.colour[channel] > 255) this.colour[channel] = 255;
+			if (this.colour[channel] < 0) this.colour[channel] = 0;
 			//console.log(tinycolor(ship.colour).toRgbString());
-			ship.el.css("background-color", tinycolor(ship.colour).toRgbString());
+			this.el.css("background-color", tinycolor(this.colour).toRgbString());
 
-			if (ship.isCloaked() && !ship.cloaked) {
-				ship.cloaked = true;
+			if (this.isCloaked() && !this.cloaked) {
+				this.cloaked = true;
 				$("#message").html("CLOAKED").show().fadeOut(950);
 			}
-			else if (!ship.isCloaked() && ship.cloaked) {
-				ship.cloaked = false;
+			else if (!this.isCloaked() && this.cloaked) {
+				this.cloaked = false;
 				$("#message").html("NOT CLOAKED").show().fadeOut(950);
 			}
 		},
 
 		move: function(dx, dy) {
 			// Check against page bounds:
-			var x = parseInt(ship.el.css("left")),
-				y = parseInt(ship.el.css("top"));
+			var x = parseInt(this.el.css("left")),
+				y = parseInt(this.el.css("top"));
 			if (x + dx < 0 || x + dx + 40 > $(window).width()) dx = 0;
 			if (y + dy < 0 || y + dy + 42 > $(window).height()) dy = 0;
-			console.log($(window).width(), $(window).height());
-			console.log(x,dx,y,dy);
 
-			ship.el.css({
+			this.el.css({
 				left: "+="+dx+"px",
 				top: "+="+dy+"px"
 			});
 		},
 
+		roll: function(dir) {
+			// Keep within page bounds:
+			var x = parseInt(this.el.css("left"));
+			var dX;
+			if (dir === 'left') {
+				dX = (x - 65 < 0) ? "+=0px" : "-=125px";
+			}
+			else if (dir === 'right') {
+				dX = (x + 185 > $(window).width()) ? "+=0px" : "+=125px";
+			}
+			this.el.addClass("rolling");
+			this.el.animate({
+				left: dX,
+			}, 500, 'swing', function() {
+				this.el.removeClass("rolling");
+			}.bind(this));
+		},
+
 		fireWeapon: function() {
-			var origin = ship.el.position();
+			var origin = this.el.position();
 			//console.log("Zap!", origin);
 			new Audio("https://marthost.uk/rgbwing/sfx_wpn_laser6.wav").play();
 			$("<div>")
@@ -86,6 +103,7 @@ $(function() {
 		}
 	}, 10000);
 
+	// Key listeners:
 	var keyState = {};
 	$(document).on("keydown", function(e) {
 		console.log(e.key);
@@ -96,15 +114,21 @@ $(function() {
 		else if (e.key === 'g') ship.alterColour('g',-32);
 		else if (e.key === 'B') ship.alterColour('b',32);
 		else if (e.key === 'b') ship.alterColour('b',-32);
+		// Rolls:
+		if (keyState['Shift'] && e.key === 'ArrowLeft') ship.roll('left');
+		else if (keyState['Shift'] && e.key === 'ArrowRight') ship.roll('right');
 		// Detect continuous keypresses:
 		keyState[e.key] = true;
 	}).on("keyup", function(e) {
 		keyState[e.key] = false;
 	});
 
+	// Movement loop:
 	function gameLoop() {
+		// Vertical:
 		if (keyState['ArrowUp']) ship.move(0,-10);
 		else if (keyState['ArrowDown']) ship.move(0,10);
+		// Horizontal:
 		if (keyState['ArrowLeft']) ship.move(-10,0);
 		else if (keyState['ArrowRight']) ship.move(10,0);
 
