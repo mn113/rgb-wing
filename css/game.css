@@ -64,29 +64,45 @@ body {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	-webkit-mask-image: url(https://marthost.uk/rgbwing/img/myship.png);
 }
 #ship-front {
-	background: white url(https://marthost.uk/rgbwing/img/myship-trans.png) no-repeat;
+	background: white url(../img/sprites.png) -60px 0 no-repeat;
+	-webkit-mask-image: url(../img/sprites.png);
 }
 #ship-back {
 	background: #999;
+	-webkit-mask-image: url(../img/sprites.png);
 	transform: rotateY(180deg);
 }
 #ship:after {
 	content: "";
-	background: url(https://marthost.uk/rgbwing/img/booster.png) repeat-x;
+	background: url(../img/sprites.png) no-repeat;
+	background-position: -7px -64px;
+	transform-origin: 50% 0;
+	transform: scale(1.5);
+	width: 20px;
+	height: 16px;
 	position: absolute;
-	top: 59px;
+	top: 58px;	/* position relative to parent ship*/
 	left: 21px;
-	width: 18px;
-	height: 20px;
 }
-#ship.boost-idle {
-
+#ship.boost-on:after {
+	background-position: -29px -64px;
 }
-#ship.boost-on {
-
+#ship.tilt-left:after {
+	background-position: -18px -64px;
+}
+#ship.tilt-right:after {
+	background-position: -18px -64px;
+	transform: rotateY(180deg);
+}
+#ship.tilt-left {
+	transition: transform 0.4s;
+	transform: rotateY(-45deg);
+}
+#ship.tilt-right {
+	transition: transform 0.4s;
+	transform: rotateY(45deg);
 }
 #ship.rolling {
 	animation: 0.9s roll-down;
@@ -108,15 +124,6 @@ body {
 		transform: rotateY(720deg) scale(1);
 	}
 }
-#ship.tilt-left {
-	transition: transform 0.4s;
-	transform: rotateY(-45deg);
-}
-#ship.tilt-right {
-	transition: transform 0.4s;
-	transform: rotateY(45deg);
-}
-
 
 #space .blast {
 	width: 16px;

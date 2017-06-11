@@ -134,8 +134,16 @@ $(function() {
 	// Movement loop:
 	function gameLoop() {
 		// Vertical:
-		if (keyState['ArrowUp']) ship.move(0,-10);
-		else if (keyState['ArrowDown']) ship.move(0,10);
+		if (keyState['ArrowUp']) {
+			ship.el.addClass('boost-on');
+			ship.move(0,-10);
+		}
+		else if (keyState['ArrowDown']) {
+			ship.move(0,10);
+		}
+		else {
+			ship.el.removeClass('boost-on');
+		}
 		// Horizontal:
 		if (keyState['ArrowLeft']) {
 			ship.el.addClass('tilt-left');
