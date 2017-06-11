@@ -104,31 +104,72 @@ $(function() {
 		return color;
 	}
 
-	function createAsteroid(size) {
-		if (typeof size === 'undefined')
-			size = (Math.random() > 0.5) ? 'big' : 'small';
-		var spin = (Math.random() > 0.5) ? 'normal' : 'reverse';
-		$("<div>").appendTo(space)
-			.addClass("asteroid")
-			.addClass(size)
-			.css({
-				left: Math.random()*space.width(),
-				'animation-direction': spin
-			})
-			.animate({
+	class Asteroid {
+		constructor(size, pos) {
+			// Parameters:
+			if (typeof size === 'undefined')
+				size = (Math.random() > 0.5) ? 'big' : 'small';
+			if (typeof pos === 'undefined') {
+				pos = {
+					x: Math.random() * space.width(),
+					y: 0
+				};
+			}
+			var spin = (Math.random() > 0.5) ? 'normal' : 'reverse';
+
+			// Create element:
+			this.el = $("<div>")
+				.addClass("asteroid")
+				.addClass(size)
+				.css({
+					left: pos.x,
+					top: pos.y,
+					'animation-direction': spin
+				})
+				.appendTo(space);
+			console.log("Asteroid created:", pos, size, spin);
+
+			this.el.on("click", function() {
+				this.split();
+			}.bind(this));
+
+			// Animate:
+			this.drift();
+		}
+
+		drift(angle = 0, speed = 8000) {
+			this.el.css({
+				transform: "rotateZ("+angle+"deg)"
+			});
+			this.el.animate({
 				top: '100%'
-			}, 8000, 'linear', function() {
+			}, speed, 'linear', function() {
 				this.remove();
 			});
-		console.log("Asteroid created:", size, spin);
+		}
+
+		split() {
+			console.log("Splitting", this.el);
+			var pos = {
+				x: this.el.position().left + 29,
+				y: this.el.position().top + 27
+			};
+			this.el.remove();
+			for (var i = 0; i < 5; i++) {
+				console.log('new', i);
+				new Asteroid('small', pos);
+				// Need them to fan out, not descend
+			}
+		}
 	}
+
 
 	// Maybe change space colour every 10s:
 	var bgChanger = setInterval(function() {
 		if (Math.random() > 0.66) {
 			$("#space").css("background-color", getRandomColor());
 		}
-		createAsteroid();
+		new Asteroid();
 	}, 10000);
 
 	// Key listeners:
