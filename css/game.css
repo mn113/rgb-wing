@@ -21,6 +21,7 @@ body {
 	overflow: hidden;
 	background: black;
 	transition: background-color 5s;
+	perspective: 1000px
 }
 #space > * {
 	position: absolute;
@@ -52,18 +53,27 @@ body {
 		background-position: 100px 100%;
 	}
 }
-#space #ship {
-	top: 50%;
-	left: 50%;
-	background: white url(https://marthost.uk/rgbwing/img/myship-trans.png) no-repeat;
-	-webkit-mask-image: url(https://marthost.uk/rgbwing/img/myship.png);
+#ship {
+	top: 50%;		/* just initial */
+	left: 50%;		/* just initial */
 	width: 60px;
 	height: 64px;
-	color: #808080;
 	transform-style: preserve-3d;
-	backface-visibility: visible;
 }
-#space #ship:after {
+#ship > div {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	-webkit-mask-image: url(https://marthost.uk/rgbwing/img/myship.png);
+}
+#ship-front {
+	background: white url(https://marthost.uk/rgbwing/img/myship-trans.png) no-repeat;
+}
+#ship-back {
+	background: #999;
+	transform: rotateY(180deg);
+}
+#ship:after {
 	content: "";
 	background: url(https://marthost.uk/rgbwing/img/booster.png) repeat-x;
 	position: absolute;
@@ -85,21 +95,28 @@ body {
 	0% {
 		transform: rotateY(0deg) scale(1);
 	}
+	25% {
+		transform: rotateY(180deg) scale(0.8);
+	}
 	50% {
-		transform: rotateY(180deg) scale(0.6);
+		transform: rotateY(360deg) scale(0.65);
+	}
+	75% {
+		transform: rotateY(540deg) scale(0.8);
 	}
 	100% {
-		transform: rotateY(360deg) scale(1);
+		transform: rotateY(720deg) scale(1);
 	}
 }
 #ship.tilt-left {
 	transition: transform 0.4s;
-	transform: rotateY(45deg);
+	transform: rotateY(-45deg);
 }
 #ship.tilt-right {
 	transition: transform 0.4s;
-	transform: rotateY(-45deg);
+	transform: rotateY(45deg);
 }
+
 
 #space .blast {
 	width: 16px;

@@ -19,7 +19,7 @@ $(function() {
 			// Keep values within 0-255:
 			if (this.colour[channel] > 255) this.colour[channel] = 255;
 			if (this.colour[channel] < 0) this.colour[channel] = 0;
-			this.el.css("background-color", tinycolor(this.colour).toRgbString());
+			$("#ship-front").css("background-color", tinycolor(this.colour).toRgbString());
 			// Adjust sliders:
 			$("input[name="+channel+"Slider]").val(this.colour[channel]).change();
 
@@ -58,19 +58,20 @@ $(function() {
 		},
 
 		roll: function(dir) {
+			var rollAmount = 150;
 			// Keep within page bounds:
 			var x = parseInt(this.el.css("left"));
 			var dX;
 			if (dir === 'left') {
-				dX = (x - 65 < 0) ? "+=0px" : "-=125px";
+				dX = (x + 60 - rollAmount < 0) ? "+=0px" : "-="+rollAmount+"px";
 			}
 			else if (dir === 'right') {
-				dX = (x + 185 > $(window).width()) ? "+=0px" : "+=125px";
+				dX = (x + 60 + rollAmount > $(window).width()) ? "+=0px" : "+="+rollAmount+"px";
 			}
 			this.el.addClass("rolling");
 			this.el.animate({
 				left: dX,
-			}, 500, 'swing', function() {
+			}, 900, 'swing', function() {	// animation duration must match CSS rotateY animation
 				this.el.removeClass("rolling");
 			}.bind(this));
 		},
