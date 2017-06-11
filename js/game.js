@@ -2,7 +2,7 @@
 
 $(function() {
 
-	//$('input[type="range"]').rangeslider();
+	var space = $("#space");
 
 	var ship = {
 		el: $("#ship"),
@@ -104,11 +104,31 @@ $(function() {
 		return color;
 	}
 
+	function createAsteroid(size) {
+		if (typeof size === 'undefined')
+			size = (Math.random() > 0.5) ? 'big' : 'small';
+		var spin = (Math.random() > 0.5) ? 'normal' : 'reverse';
+		$("<div>").appendTo(space)
+			.addClass("asteroid")
+			.addClass(size)
+			.css({
+				left: Math.random()*space.width(),
+				'animation-direction': spin
+			})
+			.animate({
+				top: '100%'
+			}, 8000, 'linear', function() {
+				this.remove();
+			});
+		console.log("Asteroid created:", size, spin);
+	}
+
 	// Maybe change space colour every 10s:
 	var bgChanger = setInterval(function() {
 		if (Math.random() > 0.66) {
 			$("#space").css("background-color", getRandomColor());
 		}
+		createAsteroid();
 	}, 10000);
 
 	// Key listeners:

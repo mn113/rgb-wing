@@ -149,6 +149,28 @@ body {
 
 }
 
+.asteroid.big {
+	height: 55px;
+	width: 58px;
+	background: url(../img/sprites.png) -120px 0 no-repeat;
+	animation: spin 20s infinite;
+}
+.asteroid.small {
+	height: 30px;
+	width: 32px;
+	background: url(../img/sprites.png) -120px -57px no-repeat;
+	animation: spin 10s infinite;
+}
+@keyframes spin {
+	0% {
+		transform: rotateZ(0deg);
+	}
+	100% {
+		transform: rotateZ(360deg);
+	}
+}
+
+
 /* RANGE SLIDERS
 ============================*/
 kbd {
