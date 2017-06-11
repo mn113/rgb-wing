@@ -78,7 +78,7 @@ $(function() {
 		fireWeapon: function() {
 			var origin = this.el.position();
 			//console.log("Zap!", origin);
-			new Audio("https://marthost.uk/rgbwing/sfx_wpn_laser6.wav").play();
+			new Audio("https://marthost.uk/rgbwing/sfx/sfx_wpn_laser6.wav").play();
 			$("<div>")
 				.addClass("blast")
 				.appendTo($("#space"))
@@ -136,8 +136,17 @@ $(function() {
 		if (keyState['ArrowUp']) ship.move(0,-10);
 		else if (keyState['ArrowDown']) ship.move(0,10);
 		// Horizontal:
-		if (keyState['ArrowLeft']) ship.move(-10,0);
-		else if (keyState['ArrowRight']) ship.move(10,0);
+		if (keyState['ArrowLeft']) {
+			ship.el.addClass('tilt-left');
+			ship.move(-10,0);
+		}
+		else if (keyState['ArrowRight']) {
+			ship.el.addClass('tilt-right');
+			ship.move(10,0);
+		}
+		else {
+			ship.el.removeClass('tilt-left tilt-right');
+		}
 
 		setTimeout(gameLoop, 20);
 	}

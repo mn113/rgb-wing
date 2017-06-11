@@ -28,7 +28,7 @@ body {
 #space .stars {
 	width: 100vw;
 	height: 100vh;
-	background: url(https://marthost.uk/rgbwing/stars.png) 0 0 repeat;
+	background: url(https://marthost.uk/rgbwing/img/stars.png) 0 0 repeat;
 }
 #space #s1 {
 	xanimation: vflow 11s linear infinite;
@@ -55,8 +55,8 @@ body {
 #space #ship {
 	top: 50%;
 	left: 50%;
-	background: white url(https://marthost.uk/rgbwing/myship-trans.png) no-repeat;
-	-webkit-mask-image: url(https://marthost.uk/rgbwing/myship.png);
+	background: white url(https://marthost.uk/rgbwing/img/myship-trans.png) no-repeat;
+	-webkit-mask-image: url(https://marthost.uk/rgbwing/img/myship.png);
 	width: 60px;
 	height: 64px;
 	color: #808080;
@@ -65,15 +65,21 @@ body {
 }
 #space #ship:after {
 	content: "";
-	background: url(https://marthost.uk/rgbwing/booster.png) repeat-x;
+	background: url(https://marthost.uk/rgbwing/img/booster.png) repeat-x;
 	position: absolute;
 	top: 59px;
 	left: 21px;
 	width: 18px;
 	height: 20px;
 }
-.rolling {
-	animation: 0.7s roll-down;
+#ship.boost-idle {
+
+}
+#ship.boost-on {
+
+}
+#ship.rolling {
+	animation: 0.9s roll-down;
 }
 @keyframes roll-down {
 	0% {
@@ -86,10 +92,19 @@ body {
 		transform: rotateY(360deg) scale(1);
 	}
 }
+#ship.tilt-left {
+	transition: transform 0.4s;
+	transform: rotateY(45deg);
+}
+#ship.tilt-right {
+	transition: transform 0.4s;
+	transform: rotateY(-45deg);
+}
+
 #space .blast {
 	width: 16px;
 	height: 20px;
-	background: url(https://marthost.uk/rgbwing/blast.png) no-repeat;
+	background: url(https://marthost.uk/rgbwing/img/blast.png) no-repeat;
 }
 #space #message {
 	width: 100%;
@@ -104,7 +119,16 @@ body {
 	color: white;
 	bottom: 0;
 }
-#space kbd {
+#hud {
+	color: white;
+}
+#hud > * {
+
+}
+
+/* RANGE SLIDERS
+============================*/
+kbd {
 	background-clip: border;
 	background-inline-policy: continuous;
 	background-origin: padding;
@@ -116,15 +140,6 @@ body {
 	padding: 2px 1px;
 	white-space: nowrap;
 }
-#hud {
-	color: white;
-}
-#hud > * {
-	display: inline-block !important;
-}
-
-/* RANGE SLIDERS
-============================*/
 input[type=range].red {
   -webkit-appearance: none;
   width: 100%;
