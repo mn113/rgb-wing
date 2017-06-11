@@ -2,6 +2,8 @@
 
 $(function() {
 
+	//$('input[type="range"]').rangeslider();
+
 	var ship = {
 		el: $("#ship"),
 		colour: {
@@ -17,9 +19,14 @@ $(function() {
 			// Keep values within 0-255:
 			if (this.colour[channel] > 255) this.colour[channel] = 255;
 			if (this.colour[channel] < 0) this.colour[channel] = 0;
-			//console.log(tinycolor(ship.colour).toRgbString());
 			this.el.css("background-color", tinycolor(this.colour).toRgbString());
+			// Adjust sliders:
+			$("input[name="+channel+"Slider]").val(this.colour[channel]).change();
 
+			this.checkCloaking();
+		},
+
+		checkCloaking: function() {
 			if (this.isCloaked() && !this.cloaked) {
 				this.cloaked = true;
 				$("#message").html("CLOAKED").show().fadeOut(950);
@@ -28,6 +35,13 @@ $(function() {
 				this.cloaked = false;
 				$("#message").html("NOT CLOAKED").show().fadeOut(950);
 			}
+		},
+
+		isCloaked: function() {
+			// Compare ship's RGB with space's RGB:
+			var read = tinycolor.readability(tinycolor(ship.colour), tinycolor($("#space").css("background-color")));
+			console.log("Readability:", read);
+			return read < 1.2;
 		},
 
 		move: function(dx, dy) {
@@ -75,13 +89,6 @@ $(function() {
 				.animate({top: 0}, origin.top*2, 'linear', function() {
 					this.remove();
 				});
-		},
-
-		isCloaked: function() {
-			// Compare ship's RGB with space's RGB:
-			var read = tinycolor.readability(tinycolor(ship.colour), tinycolor($("#space").css("background-color")));
-			console.log("Readability:", read);
-			return read < 1.2;
 		}
 
 	};

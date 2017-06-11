@@ -5,6 +5,7 @@
 	<title>RGB Wing</title>
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/game.css">
+	<!--link rel="stylesheet" href="https://cdn.jsdelivr.net/rangeslider.js/2.3.0/rangeslider.css"-->
 </head>
 <body>
 	<div id="space">
@@ -22,9 +23,20 @@
 				<li>Movement: <kbd>&uarr;</kbd> <kbd>&darr;</kbd> <kbd>&larr;</kbd> <kbd>&rarr;</kbd></li>
 			</ul>
 		</div>
+		<div id="hud">
+			<input name="rSlider" class="red" type="range" min="0" max="255" value="128" disabled>
+			<label for="rSlider"><kbd>r</kbd><kbd>R</kbd></label>
+			<br>
+			<input name="gSlider" class="green" type="range" min="0" max="255" value="128" disabled>
+			<label for="gSlider"><kbd>g</kbd><kbd>G</kbd></label>
+			<br>
+			<input name="bSlider" class="blue" type="range" min="0" max="255" value="128" disabled>
+			<label for="bSlider"><kbd>b</kbd><kbd>B</kbd></label>
+		</div>
 		<div id="message"></div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js"></script>
+	<!--script src="https://cdn.jsdelivr.net/rangeslider.js/2.3.0/rangeslider.min.js"></script-->
 	<script src="https://cdn.jsdelivr.net/tinycolor/1.4.1/tinycolor-min.js"></script>
 	<script src="js/game.js"></script>
 </body>
