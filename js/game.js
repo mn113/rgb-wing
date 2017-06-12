@@ -94,6 +94,11 @@ $(function() {
 
 	};
 
+	// Keep track for CD:
+	//var asteroids = [];
+	//var blasts = [];
+
+
 	function getRandomColor() {
 		var letters = '0369CF';
 		var color = '#';
@@ -105,7 +110,7 @@ $(function() {
 	}
 
 	class Asteroid {
-		constructor(size, pos) {
+		constructor(size, pos, angle = 0) {
 			// Parameters:
 			if (typeof size === 'undefined')
 				size = (Math.random() > 0.5) ? 'big' : 'small';
@@ -117,6 +122,8 @@ $(function() {
 			}
 			var spin = (Math.random() > 0.5) ? 'normal' : 'reverse';
 
+			this.angle = angle;
+
 			// Create element:
 			this.el = $("<div>")
 				.addClass("asteroid")
@@ -127,19 +134,20 @@ $(function() {
 					'animation-direction': spin
 				})
 				.appendTo(space);
-			console.log("Asteroid created:", pos, size, spin);
+			console.log("Asteroid created:", pos, size, spin, angle+'deg');
 
 			this.el.on("click", function() {
-				this.split();
+				if (size === 'big') this.split();
+				else this.disintegrate();
 			}.bind(this));
 
 			// Animate:
 			this.drift();
 		}
 
-		drift(angle = 0, speed = 8000) {
+		drift(speed = 8000) {
 			this.el.css({
-				transform: "rotateZ("+angle+"deg)"
+				transform: "rotateZ("+this.angle+"deg)"
 			});
 			this.el.animate({
 				top: '100%'
@@ -156,13 +164,23 @@ $(function() {
 			};
 			this.el.remove();
 			for (var i = 0; i < 5; i++) {
-				console.log('new', i);
-				new Asteroid('small', pos);
+				var randAngle = Math.random() * 360;
+				new Asteroid('small', pos, randAngle);
 				// Need them to fan out, not descend
 			}
 		}
+
+		disintegrate() {
+			// rock shower?
+			this.el.remove();			
+		}
 	}
 
+	var collisionDetector = setInterval(function() {
+		// do CD
+		// asteroid <-> ship
+		// blast <-> asteroid
+	}, 500);
 
 	// Maybe change space colour every 10s:
 	var bgChanger = setInterval(function() {
