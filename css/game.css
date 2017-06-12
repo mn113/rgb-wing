@@ -138,6 +138,20 @@ body {
 		transform: rotateY(720deg) scale(1);
 	}
 }
+#ship.flashing {
+	animation: 0.4s flash infinite;
+}
+@keyframes flash {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.3;
+	}
+	100% {
+		opacity: 1;
+	}
+}
 
 #space .blast {
 	width: 16px;

@@ -1,6 +1,10 @@
-/*global $, tinycolor */
+/*global $, tinycolor, SAT */
 
 $(function() {
+
+	// Aliases for SAT objects:
+	var V = SAT.Vector;
+	var C = SAT.Circle;
 
 	var space = $("#space");
 
@@ -90,12 +94,29 @@ $(function() {
 				.animate({top: 0}, origin.top*2, 'linear', function() {
 					this.remove();
 				});
+		},
+
+		takeDamage: function(damage) {
+			this.el.addClass('flashing');
+			this.health -= damage;
+			setTimeout(function() {
+				this.el.removeClass('flashing');
+			}.bind(this), 1600);
+		},
+
+		toSATCircle() {
+			var x = this.el.position().left + 30,
+				y = this.el.position().top + 32,
+				radius = 32;
+			return new C(new V(x, y), radius);
 		}
 
 	};
+	ship.takeDamage(0);
+
 
 	// Keep track for CD:
-	//var asteroids = [];
+	var asteroids = [];
 	//var blasts = [];
 
 
@@ -122,7 +143,9 @@ $(function() {
 			}
 			var spin = (Math.random() > 0.5) ? 'normal' : 'reverse';
 
+			this.size = size;
 			this.angle = angle;
+			this.id = 'ast_' + asteroids.length;
 
 			// Create element:
 			this.el = $("<div>")
@@ -136,6 +159,10 @@ $(function() {
 				.appendTo(space);
 			console.log("Asteroid created:", pos, size, spin, angle+'deg');
 
+			// Register:
+			asteroids.push(this);
+
+			// Temporary:
 			this.el.on("click", function() {
 				if (size === 'big') this.split();
 				else this.disintegrate();
@@ -153,6 +180,8 @@ $(function() {
 				top: '100%'
 			}, speed, 'linear', function() {
 				this.remove();
+				// Deregister:
+				asteroids.splice(asteroids.indexOf(this), 1);
 			});
 		}
 
@@ -172,14 +201,29 @@ $(function() {
 
 		disintegrate() {
 			// rock shower?
-			this.el.remove();			
+			this.el.remove();
+		}
+
+		toSATCircle() {
+			var radius = (this.size === 'big') ? 30 : 15,
+				x = this.el.position().left + radius,
+				y = this.el.position().top + radius;
+			return new C(new V(x, y), radius);
 		}
 	}
 
 	var collisionDetector = setInterval(function() {
-		// do CD
-		// asteroid <-> ship
-		// blast <-> asteroid
+
+		// test: ship <-> asteroids
+		asteroids.forEach(function(asteroid) {
+			var response = new SAT.Response();
+			var collided = SAT.testCircleCircle(ship.toSATCircle(), asteroid.toSATCircle(), response);
+			console.log(asteroid.id, ' vs ship ?', collided);
+			if (collided) ship.takeDamage(10);
+		});
+
+		// test: blasts <-> asteroids
+
 	}, 500);
 
 	// Maybe change space colour every 10s:
