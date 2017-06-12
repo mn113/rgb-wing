@@ -69,11 +69,16 @@ $(function() {
 				dX = (x + 60 + rollAmount > $(window).width()) ? "+=0px" : "+="+rollAmount+"px";
 			}
 			this.el.addClass("rolling");
-			this.el.animate({
+			this.el.velocity({
 				left: dX,
-			}, 900, 'swing', function() {	// animation duration must match CSS rotateY animation
-				this.el.removeClass("rolling");
-			}.bind(this));
+			},
+			{
+				duration: 900,
+				easing: 'swing',
+				complete: function() {	// animation duration must match CSS rotateY animation
+					this.el.removeClass("rolling");
+				}.bind(this)
+			});
 		},
 
 		fireWeapon: function() {
@@ -120,6 +125,7 @@ $(function() {
 			this.origin = origin;
 			this.el = $("<div>")
 				.addClass("blast")
+				.addClass(type)
 				.appendTo($("#space"))
 				.css({
 					top: origin.top,
@@ -134,9 +140,16 @@ $(function() {
 		}
 
 		shoot() {
-			this.el.animate({top: 0}, this.origin.top*2, 'linear', function() {
-				this.destroy();
-			}.bind(this));
+			this.el.velocity({
+				top: 0
+			},
+			{
+				duration: this.origin.top*2,
+				easing: 'linear',
+				complete: function() {
+					this.destroy();
+				}.bind(this)
+			});
 		}
 
 		destroy() {
@@ -186,21 +199,42 @@ $(function() {
 
 			// Register:
 			asteroids.push(this);
-
-			// Animate:
-			this.drift();
 		}
 
 		drift(speed = 8000) {
-			this.el.css({
-				transform: "rotateZ("+this.angle+"deg)"
-			});
-			this.el.animate({
+			this.el.addClass('spinning');
+			this.el.velocity({
 				top: '100%'
-			}, speed, 'linear', function() {
-				this.el.remove();
-				this.deregister();
-			}.bind(this));
+			},
+			{
+				duration: speed,
+				easing: 'linear',
+				complete: function() {
+					this.el.remove();
+					this.deregister();
+				}.bind(this)
+			});
+		}
+
+		fanOut() {
+			this.el.addClass('fanning');
+			this.el.velocity({
+				translateX: "100px",
+				top: "+=100px"
+			},
+			{
+				duration: 3000,
+				easing: 'ease-out',		// the bits decelerate
+				begin: function() {
+					// Set initial values for fan animation:
+					$.Velocity.hook(this.el, "rotateZ", this.angle+"deg");
+					$.Velocity.hook(this.el, "translateX", "20px");
+				}.bind(this),
+				complete: function() {
+					this.el.remove();
+					this.deregister();
+				}.bind(this)
+			});
 		}
 
 		takeDamage(damage) {
@@ -217,10 +251,10 @@ $(function() {
 			};
 			this.el.remove();
 			this.deregister();
-			// Create mini-asteroids:
+			// Create mini-asteroids with different angles:
 			for (var i = 0; i < 5; i++) {
-				var randAngle = Math.random() * 360;
-				new Asteroid('small', pos, randAngle);
+				//var randAngle = Math.random() * 360;
+				new Asteroid('small', pos, 72*i).fanOut();
 				// Need them to fan out, not descend
 			}
 		}
@@ -258,7 +292,6 @@ $(function() {
 
 
 	var collisionDetector = setInterval(function() {
-
 		// test: asteroids <-> ship
 		asteroids.forEach(function(asteroid) {
 			var response = new SAT.Response();
@@ -284,7 +317,7 @@ $(function() {
 		if (Math.random() > 0.66) {
 			$("#space").css("background-color", utils.getRandomColor());
 		}
-		new Asteroid();
+		new Asteroid().drift();
 	}, 10000);
 
 	// Key listeners:

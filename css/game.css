@@ -171,6 +171,10 @@ body {
 	color: white;
 	bottom: 0;
 }
+
+
+/* HUD
+=====================================*/
 #hud {
 	color: white;
 	pointer-events: none;
@@ -197,17 +201,26 @@ body {
 	color: white;
 	margin-left: -5em;
 }
+#debug {
+	top: 50%;
+	left: 0;
+	color: white;
+}
 
+
+/* ASTEROIDS
+======================================*/
 .asteroid.big {
 	height: 55px;
 	width: 58px;
 	background: url(../img/sprites.png) -120px 0 no-repeat;
-	animation: spin 20s infinite;
 }
 .asteroid.small {
 	height: 30px;
 	width: 32px;
 	background: url(../img/sprites.png) -120px -57px no-repeat;
+}
+.spinning {
 	animation: spin 10s infinite;
 }
 @keyframes spin {
@@ -218,12 +231,19 @@ body {
 		transform: rotateZ(360deg);
 	}
 }
-
-#debug {
-	top: 50%;
-	left: 0;
-	color: white;
+.fanning {
+	animation: fann 10s;
 }
+@keyframes fan {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(200px);
+	}
+}
+
+
 
 /* RANGE SLIDERS
 ============================*/
