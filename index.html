@@ -27,14 +27,18 @@
 			</ul>
 		</div>
 		<div id="hud">
-			<input name="rSlider" class="red" type="range" min="0" max="255" value="128" disabled>
-			<label for="rSlider"><kbd>r</kbd><kbd>R</kbd></label>
-			<br>
-			<input name="gSlider" class="green" type="range" min="0" max="255" value="128" disabled>
-			<label for="gSlider"><kbd>g</kbd><kbd>G</kbd></label>
-			<br>
-			<input name="bSlider" class="blue" type="range" min="0" max="255" value="128" disabled>
-			<label for="bSlider"><kbd>b</kbd><kbd>B</kbd></label>
+			<div id="colourBars">
+				<input name="rSlider" class="colourBar red" type="range" min="0" max="255" value="128" disabled>
+				<label for="rSlider"><kbd>r</kbd><kbd>R</kbd></label>
+				<br>
+				<input name="gSlider" class="colourBar green" type="range" min="0" max="255" value="128" disabled>
+				<label for="gSlider"><kbd>g</kbd><kbd>G</kbd></label>
+				<br>
+				<input name="bSlider" class="colourBar blue" type="range" min="0" max="255" value="128" disabled>
+				<label for="bSlider"><kbd>b</kbd><kbd>B</kbd></label>
+			</div>
+
+			<input name="shipHealth" type="range" min="0" max="100" value="100" disabled>
 		</div>
 		<div id="message"></div>
 		<div id="debug">

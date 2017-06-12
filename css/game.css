@@ -173,9 +173,29 @@ body {
 }
 #hud {
 	color: white;
+	pointer-events: none;
+	width: 100vw;
+	height: 100vh;
+	border: 1px dashed yellow;
 }
-#hud > * {
-
+#hud #colourBars {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 10%;
+	height: 20px;
+}
+#hud input[name=shipHealth] {
+	position: absolute;
+	bottom: 20px;
+	left: 35%;
+	width: 30%;
+	height: 20px;
+}
+#hud input[name=shipHealth]:before {
+	content: "Health";
+	color: white;
+	margin-left: -5em;
 }
 
 .asteroid.big {
