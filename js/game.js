@@ -105,7 +105,9 @@ $(function() {
 
 	// Keep track of entities for CD:
 	var asteroids = [];
+	var astIncrementor = 0;
 	var blasts = [];
+	var blastIncrementor = 0;
 
 
 	class Blast {
@@ -118,6 +120,8 @@ $(function() {
 					top: origin.top,
 					left: origin.left+23
 				});
+			this.id = 'blast_' + blastIncrementor;
+			blastIncrementor++;
 			// Register:
 			blasts.push(this);
 
@@ -156,7 +160,8 @@ $(function() {
 
 			this.size = size;
 			this.angle = angle;
-			this.id = 'ast_' + asteroids.length;
+			this.id = 'ast_' + astIncrementor;
+			astIncrementor++;
 
 			// Create element:
 			this.el = $("<div>")
@@ -173,12 +178,6 @@ $(function() {
 			// Register:
 			asteroids.push(this);
 
-			// Temporary:
-			this.el.on("click", function() {
-				if (size === 'big') this.split();
-				else this.disintegrate();
-			}.bind(this));
-
 			// Animate:
 			this.drift();
 		}
@@ -194,6 +193,12 @@ $(function() {
 				// Deregister:
 				asteroids.splice(asteroids.indexOf(this), 1);
 			});
+		}
+
+		takeDamage(damage) {
+			if (this.size === 'big') this.split();
+			else this.disintegrate();
+			// Later on asteroids can have health...
 		}
 
 		split() {
@@ -243,13 +248,21 @@ $(function() {
 		asteroids.forEach(function(asteroid) {
 			var response = new SAT.Response();
 			var collided = SAT.testCircleCircle(ship.toSATCircle(), asteroid.toSATCircle(), response);
-			console.log(asteroid.id, ' vs ship ?', collided);
+			console.log(asteroid.id, 'vs ship ?', collided);
 			if (collided) ship.takeDamage(10);
 		});
 
 		// test: blasts <-> asteroids
+		asteroids.forEach(function(asteroid) {
+			blasts.forEach(function(blast) {
+				var response = new SAT.Response();
+				var collided = SAT.testCircleCircle(blast.toSATCircle(), asteroid.toSATCircle(), response);
+				console.log(asteroid.id, 'vs', blast.id, '?', collided);
+				if (collided) asteroid.takeDamage(10);
+			});
+		});
 
-	}, 500);
+	}, 200);	// TODO: run faster
 
 	// Maybe change space colour every 10s:
 	var bgChanger = setInterval(function() {
@@ -289,7 +302,7 @@ $(function() {
 
 		string = "Blasts:";
 		for (var b of blasts) {
-			string += 'B,';
+			string += b.id + ',';
 		}
 		$("#blastsArray").html(string);
 	}
