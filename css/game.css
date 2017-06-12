@@ -199,6 +199,11 @@ body {
 	}
 }
 
+#debug {
+	top: 50%;
+	left: 0;
+	color: white;
+}
 
 /* RANGE SLIDERS
 ============================*/

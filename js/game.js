@@ -2,10 +2,6 @@
 
 $(function() {
 
-	// Aliases for SAT objects:
-	var V = SAT.Vector;
-	var C = SAT.Circle;
-
 	var space = $("#space");
 
 	var ship = {
@@ -84,16 +80,7 @@ $(function() {
 			var origin = this.el.position();
 			//console.log("Zap!", origin);
 			new Audio("https://marthost.uk/rgbwing/sfx/sfx_wpn_laser6.wav").play();
-			$("<div>")
-				.addClass("blast")
-				.appendTo($("#space"))
-				.css({
-					top: origin.top,
-					left: origin.left+23
-				})
-				.animate({top: 0}, origin.top*2, 'linear', function() {
-					this.remove();
-				});
+			new Blast(origin);
 		},
 
 		takeDamage: function(damage) {
@@ -108,27 +95,51 @@ $(function() {
 			var x = this.el.position().left + 30,
 				y = this.el.position().top + 32,
 				radius = 32;
-			return new C(new V(x, y), radius);
+			return new SAT.Circle(new SAT.Vector(x, y), radius);
 		}
 
 	};
+	// Initial flash:
 	ship.takeDamage(0);
 
 
-	// Keep track for CD:
+	// Keep track of entities for CD:
 	var asteroids = [];
-	//var blasts = [];
+	var blasts = [];
 
 
-	function getRandomColor() {
-		var letters = '0369CF';
-		var color = '#';
-		for (var i = 0; i < 6; i++ ) {
-			color += letters[Math.floor(Math.random() * 6)];
+	class Blast {
+		constructor(origin, type = '') {
+			this.origin = origin;
+			this.el = $("<div>")
+				.addClass("blast")
+				.appendTo($("#space"))
+				.css({
+					top: origin.top,
+					left: origin.left+23
+				});
+			// Register:
+			blasts.push(this);
+
+			this.shoot();
 		}
-		//console.log("Randomly:", color);
-		return color;
+
+		shoot() {
+			this.el.animate({top: 0}, this.origin.top*2, 'linear', function() {
+				this.remove();
+				// Deregister:
+				blasts.splice(blasts.indexOf(this), 1);
+			});
+		}
+
+		toSATCircle() {
+			var radius = 8,
+				x = this.el.position().left + radius,
+				y = this.el.position().top + radius;
+			return new SAT.Circle(new SAT.Vector(x, y), radius);
+		}
 	}
+
 
 	class Asteroid {
 		constructor(size, pos, angle = 0) {
@@ -208,9 +219,23 @@ $(function() {
 			var radius = (this.size === 'big') ? 30 : 15,
 				x = this.el.position().left + radius,
 				y = this.el.position().top + radius;
-			return new C(new V(x, y), radius);
+			return new SAT.Circle(new SAT.Vector(x, y), radius);
 		}
 	}
+
+
+	var utils = {
+		getRandomColor: function() {
+			var letters = '0369CF';
+			var color = '#';
+			for (var i = 0; i < 6; i++ ) {
+				color += letters[Math.floor(Math.random() * 6)];
+			}
+			//console.log("Randomly:", color);
+			return color;
+		}
+	};
+
 
 	var collisionDetector = setInterval(function() {
 
@@ -229,7 +254,7 @@ $(function() {
 	// Maybe change space colour every 10s:
 	var bgChanger = setInterval(function() {
 		if (Math.random() > 0.66) {
-			$("#space").css("background-color", getRandomColor());
+			$("#space").css("background-color", utils.getRandomColor());
 		}
 		new Asteroid();
 	}, 10000);
@@ -253,6 +278,21 @@ $(function() {
 	}).on("keyup", function(e) {
 		keyState[e.key] = false;
 	});
+
+	// For debugging:
+	function dumpEntityArrays() {
+		var string = "Asts:";
+		for (var a of asteroids) {
+			string += a.id + ',';
+		}
+		$("#astsArray").html(string);
+
+		string = "Blasts:";
+		for (var b of blasts) {
+			string += 'B,';
+		}
+		$("#blastsArray").html(string);
+	}
 
 	// Movement loop:
 	function gameLoop() {
@@ -279,6 +319,8 @@ $(function() {
 		else {
 			ship.el.removeClass('tilt-left tilt-right');
 		}
+
+		dumpEntityArrays();
 
 		setTimeout(gameLoop, 20);
 	}
