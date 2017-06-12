@@ -92,7 +92,8 @@ $(function() {
 			// Doesn't take damage while taking damage:
 			if (!this.el.hasClass('flashing')) {
 				this.health -= damage;
-				$("input[name=shipHealth]").val(this.health).change();
+				//$("input[name=shipHealth]").val(this.health).change();
+				$("#shipHealth span").css("width", this.health+"%");
 
 				this.el.addClass('flashing');
 				setTimeout(function() {
