@@ -10,6 +10,7 @@
 	<div id="space">
 		<div class="stars" id="s1"></div>
 		<div class="stars" id="s2"></div>
+		<div class="asteroid small breaking" style="left:30%; top: 30%;"></div>
 		<div id="ship">
 			<div id="ship-back"></div>
 			<div id="ship-front"></div>
@@ -22,8 +23,14 @@
 				<li class="green">Green: +/- <kbd>G</kbd> <kbd>g</kbd></li>
 				<li class="blue">Blue: +/- <kbd>B</kbd> <kbd>b</kbd></li>
 				<li>Fire: <kbd>z</kbd></li>
-				<li>Movement: <kbd>&uarr;</kbd> <kbd>&darr;</kbd> <kbd>&larr;</kbd> <kbd>&rarr;</kbd></li>
+				<!--li>Movement: <kbd>&uarr;</kbd> <kbd>&darr;</kbd> <kbd>&larr;</kbd> <kbd>&rarr;</kbd></li-->
 				<li>Barrel roll: <kbd>shift</kbd>+<kbd>&larr;</kbd>/<kbd>&rarr;</kbd></li>
+				<li>
+					Up: &nbsp;&nbsp;&nbsp;<button id="up">▲</button><br>
+				    L/R: <button id="left">◀</button><button id="right">►</button><br>
+				    Down: &nbsp;&nbsp;<button id="down">▼</button>
+				</li>
+				<li>Barrel roll: <button>shift</button> + direction</li>
 			</ul>
 		</div>
 		<div id="hud">

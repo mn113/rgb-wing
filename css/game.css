@@ -236,15 +236,15 @@ body {
 		transform: rotateZ(360deg);
 	}
 }
-.fanning {
-	animation: fann 10s;
+.breaking {
+	animation: crumble 0.65s steps(4) 1;
 }
-@keyframes fan {
+@keyframes crumble {
 	0% {
-		transform: translateX(0);
+		background-position: -152px -57px;
 	}
 	100% {
-		transform: translateX(200px);
+		background-position: -280px -57px;
 	}
 }
 

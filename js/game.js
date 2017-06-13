@@ -265,10 +265,13 @@ $(function() {
 		}
 
 		disintegrate() {
-			// rock shower?
-			new Audio("sfx/sfx_exp_shortest_soft2_asterblat.wav").play();
-			this.el.remove();
 			this.deregister();
+			new Audio("sfx/sfx_exp_shortest_soft2_asterblat.wav").play();
+			// Rock shower:
+			this.el.addClass("breaking");
+			setTimeout(function() {
+				this.el.remove();
+			}.bind(this), 600);
 		}
 
 		deregister() {
@@ -303,15 +306,16 @@ $(function() {
 			var response = new SAT.Response();
 			var collided = SAT.testCircleCircle(ship.toSATCircle(), asteroid.toSATCircle(), response);
 			console.log(asteroid.id, 'vs ship ?', collided);
-			if (collided) ship.takeDamage(10);
-
+			if (collided) {
+				ship.takeDamage(asteroid.size === 'big' ? 10 : 5);	// TODO: move damage dealt to host
+			}
 			// test: asteroids <-> blasts
 			blasts.forEach(function(blast) {
 				var response = new SAT.Response();
 				var collided = SAT.testCircleCircle(blast.toSATCircle(), asteroid.toSATCircle(), response);
 				console.log(asteroid.id, 'vs', blast.id, '?', collided);
 				if (collided) {
-					asteroid.takeDamage(10);
+					asteroid.takeDamage(10);	// TODO: move damage dealt to host
 					blast.destroy();
 				}
 			});
