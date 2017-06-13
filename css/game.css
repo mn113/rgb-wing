@@ -202,8 +202,9 @@ body {
 	color: white;
 	pointer-events: none;
 	width: 100vw;
-	height: 100vh;
+	height: calc(100vh - 2px);
 	border: 1px dashed yellow;
+	font-family: "Press Start 2P";
 }
 #hud #colourBars {
 	position: absolute;
@@ -236,6 +237,7 @@ body {
 	padding: 2px;
 	background: #222;
 	border: 2px solid #ddd;
+	color: black;
 }
 #cloaking {
 	bottom: 50px;
@@ -252,6 +254,16 @@ body {
 	width: 50%;
 	background: #eee;
 	background: linear-gradient(to bottom, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%);
+}
+#shipHealth span:before,
+#cloaking span:before {
+	content: "CLOAK";
+	position: absolute;
+	top: 4px;
+	left: 6px;
+}
+#shipHealth span:before {
+	content: "HULL";
 }
 #debug {
 	top: 50%;
