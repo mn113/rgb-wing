@@ -65,11 +65,11 @@ body {
 	backface-visibility: hidden;
 }
 #ship-front {
-	background: white url(../img/sprites.png) -60px 0 no-repeat;
+	background: #808080 url(../img/sprites.png) -60px 0 no-repeat;
 	-webkit-mask-image: url(../img/sprites.png);
 }
 #ship-back {
-	background: #999;
+	background: #808080;
 	-webkit-mask-image: url(../img/sprites.png);
 	transform: rotateY(180deg);
 }
@@ -214,6 +214,7 @@ body {
 }
 #hud #colourBars > div {
 	position: relative;
+	line-height: 20px;
 }
 #hud #colourBars > div > label:first-of-type {
 	position: absolute;
@@ -225,7 +226,8 @@ body {
 	right: 0;
 	top: 0;
 }
-#hud #shipHealth {
+#shipHealth,
+#cloaking {
 	position: absolute;
 	bottom: 20px;
 	left: 35%;
@@ -235,12 +237,21 @@ body {
 	background: #222;
 	border: 2px solid #ddd;
 }
-#hud #shipHealth span {
+#cloaking {
+	bottom: 50px;
+}
+#shipHealth span,
+#cloaking span {
 	display: block;
 	width: 100%;
 	height: 20px;
 	background: lawngreen;
 	background: linear-gradient(to bottom, rgba(191,210,85,1) 0%,rgba(142,185,42,1) 50%,rgba(114,170,0,1) 51%,rgba(158,203,45,1) 100%);
+}
+#cloaking span {
+	width: 50%;
+	background: #eee;
+	background: linear-gradient(to bottom, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%);
 }
 #debug {
 	top: 50%;

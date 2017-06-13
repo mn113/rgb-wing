@@ -13,6 +13,7 @@ $(function() {
 		},
 		health: 100,
 		cloaked: false,
+		cloaking: 100,
 
 		alterColour: function(channel, delta) {
 			this.colour[channel] += delta;
@@ -26,6 +27,19 @@ $(function() {
 			this.checkCloaking();
 		},
 
+		isCloaked: function() {
+			// Compare ship's RGB with space's RGB:
+			var spaceColour = tinycolor(space.css("background-color"));
+			var deltaC = Math.abs(spaceColour._r - this.colour.r);
+			deltaC += Math.abs(spaceColour._g - this.colour.g);
+			deltaC += Math.abs(spaceColour._b - this.colour.b);
+
+			this.cloaking = 100 - (deltaC/7.65);	// 0-100 linear
+			$("#cloaking span").css("width", this.cloaking+"%");
+
+			return this.cloaking > 75;
+		},
+
 		checkCloaking: function() {
 			if (this.isCloaked() && !this.cloaked) {
 				this.cloaked = true;
@@ -35,13 +49,6 @@ $(function() {
 				this.cloaked = false;
 				$("#message").html("NOT CLOAKED").show().fadeOut(950);
 			}
-		},
-
-		isCloaked: function() {
-			// Compare ship's RGB with space's RGB:
-			var read = tinycolor.readability(tinycolor(ship.colour), tinycolor($("#space").css("background-color")));
-			console.log("Readability:", read);
-			return read < 1.2;
 		},
 
 		move: function(dx, dy) {
@@ -91,6 +98,7 @@ $(function() {
 		takeDamage: function(damage) {
 			// Doesn't take damage while taking damage:
 			if (!this.el.hasClass('flashing')) {
+				damage *= (100 - this.cloaking)/100;
 				this.health -= damage;
 				$("#shipHealth span").css("width", this.health+"%");
 
@@ -307,7 +315,7 @@ $(function() {
 			var collided = SAT.testCircleCircle(ship.toSATCircle(), asteroid.toSATCircle(), response);
 			console.log(asteroid.id, 'vs ship ?', collided);
 			if (collided) {
-				ship.takeDamage(asteroid.size === 'big' ? 10 : 5);	// TODO: move damage dealt to host
+				ship.takeDamage(asteroid.size === 'big' ? 30 : 15);	// TODO: move damage dealt to host
 			}
 			// test: asteroids <-> blasts
 			blasts.forEach(function(blast) {
@@ -325,7 +333,8 @@ $(function() {
 	// Maybe change space colour every 10s:
 	var bgChanger = setInterval(function() {
 		if (Math.random() > 0.66) {
-			$("#space").css("background-color", utils.getRandomColor());
+			$("#space").css("background-color", utils.getRandomColor());	// COULD USE tinycolor.random().toString()
+			ship.checkCloaking();
 		}
 		new Asteroid().drift();
 	}, 10000);
