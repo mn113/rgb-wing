@@ -316,6 +316,7 @@ $(function() {
 			console.log(asteroid.id, 'vs ship ?', collided);
 			if (collided) {
 				ship.takeDamage(asteroid.size === 'big' ? 30 : 15);	// TODO: move damage dealt to host
+				asteroid.takeDamage(10);	// TODO: move damage dealt to host
 			}
 			// test: asteroids <-> blasts
 			blasts.forEach(function(blast) {
