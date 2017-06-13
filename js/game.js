@@ -84,7 +84,7 @@ $(function() {
 		fireWeapon: function() {
 			var origin = this.el.position();
 			//console.log("Zap!", origin);
-			new Audio("https://marthost.uk/rgbwing/sfx/sfx_wpn_laser6.wav").play();
+			new Audio("sfx/sfx_wpn_laser6.wav").play();
 			new Blast(origin);
 		},
 
@@ -92,8 +92,9 @@ $(function() {
 			// Doesn't take damage while taking damage:
 			if (!this.el.hasClass('flashing')) {
 				this.health -= damage;
-				//$("input[name=shipHealth]").val(this.health).change();
 				$("#shipHealth span").css("width", this.health+"%");
+
+				new Audio("sfx/sfx_sounds_damage3.wav").play();
 
 				this.el.addClass('flashing');
 				setTimeout(function() {
@@ -250,6 +251,9 @@ $(function() {
 				x: this.el.position().left + 29,
 				y: this.el.position().top + 27
 			};
+
+			new Audio("sfx/sfx_exp_various4_asterboom.wav").play();
+
 			this.el.remove();
 			this.deregister();
 			// Create mini-asteroids with different angles:
@@ -262,6 +266,7 @@ $(function() {
 
 		disintegrate() {
 			// rock shower?
+			new Audio("sfx/sfx_exp_shortest_soft2_asterblat.wav").play();
 			this.el.remove();
 			this.deregister();
 		}
