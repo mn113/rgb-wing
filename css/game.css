@@ -29,7 +29,11 @@ body {
 #space .stars {
 	width: 100vw;
 	height: 100vh;
-	background: url(https://marthost.uk/rgbwing/img/stars.png) 0 0 repeat;
+	background-color: white;
+    -webkit-mask-image: url(../img/stars.svg);
+    mask-image: url(../img/stars.svg);
+	/*background: url(../img/stars.svg) 0 0 repeat;*/
+	transition: background-color 5s;
 	transform: translateZ(0);	/* puts the star layers on separate GPU threads */
 }
 #space #s1 {
@@ -37,7 +41,8 @@ body {
 }
 #space #s2 {
 	animation: vflow 17s linear infinite;
-	background-position: 20px 0;
+	-webkit-mask-position: 50% 0;
+	mask-position: 50% 0;
 }
 @keyframes vflow {
 	from {

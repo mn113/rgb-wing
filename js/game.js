@@ -313,7 +313,7 @@ $(function() {
 		asteroids.forEach(function(asteroid) {
 			var response = new SAT.Response();
 			var collided = SAT.testCircleCircle(ship.toSATCircle(), asteroid.toSATCircle(), response);
-			console.log(asteroid.id, 'vs ship ?', collided);
+			//console.log(asteroid.id, 'vs ship ?', collided);
 			if (collided) {
 				ship.takeDamage(asteroid.size === 'big' ? 30 : 15);	// TODO: move damage dealt to host
 				asteroid.takeDamage(10);	// TODO: move damage dealt to host
@@ -322,7 +322,7 @@ $(function() {
 			blasts.forEach(function(blast) {
 				var response = new SAT.Response();
 				var collided = SAT.testCircleCircle(blast.toSATCircle(), asteroid.toSATCircle(), response);
-				console.log(asteroid.id, 'vs', blast.id, '?', collided);
+				//console.log(asteroid.id, 'vs', blast.id, '?', collided);
 				if (collided) {
 					asteroid.takeDamage(10);	// TODO: move damage dealt to host
 					blast.destroy();
@@ -334,11 +334,16 @@ $(function() {
 	// Maybe change space colour every 10s:
 	var bgChanger = setInterval(function() {
 		if (Math.random() > 0.66) {
-			$("#space").css("background-color", utils.getRandomColor());	// COULD USE tinycolor.random().toString()
+			var bgColour = tinycolor.random();
+			$("#space").css("background-color", bgColour.toString()),
 			ship.checkCloaking();
+			// Change stars:
+			var oppositeColour = bgColour.complement();
+			$("#s1").css("background-color", oppositeColour.toString());
+			$("#s2").css("background-color", oppositeColour.spin(30).toString());
 		}
 		new Asteroid().drift();
-	}, 10000);
+	}, 2000);
 
 	// Key listeners:
 	var keyState = {};
