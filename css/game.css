@@ -44,7 +44,7 @@ body {
 	-webkit-mask-position: 50% 0;
 	mask-position: 50% 0;
 }
-@keyframes vflow {
+@keyframes vfloww {
 	from {
 		transform: translateY(-100px);
 	}
@@ -211,13 +211,6 @@ body {
 	border: 1px dashed yellow;
 	font-family: "Press Start 2P";
 }
-#hud #colourBars {
-	position: absolute;
-	top: 5px;
-	left: 5px;
-	width: 20%;
-	height: 20px;
-}
 #hud #colourBars > div {
 	position: relative;
 	line-height: 20px;
@@ -232,10 +225,19 @@ body {
 	right: 0;
 	top: 0;
 }
+#colourBars .red   input:before { content: 'r'; position: absolute; left:  4px; }
+#colourBars .red   input:after  { content: 'R'; position: absolute; right: 4px; }
+#colourBars .green input:before { content: 'g'; position: absolute; left:  4px; }
+#colourBars .green input:after  { content: 'G'; position: absolute; right: 4px; }
+#colourBars .blue  input:before { content: 'b'; position: absolute; left:  4px; }
+#colourBars .blue  input:after  { content: 'B'; position: absolute; right: 4px; }
+
+#colourBars,
 #shipHealth,
-#cloaking {
+#cloaking,
+#weapon {
 	position: absolute;
-	bottom: 20px;
+	bottom: 180px;
 	left: 35%;
 	width: 30%;
 	height: 20px;
@@ -245,10 +247,17 @@ body {
 	color: black;
 }
 #cloaking {
+	bottom: 80px;
+}
+#shipHealth {
 	bottom: 50px;
 }
+#weapon {
+	bottom: 20px;
+}
 #shipHealth span,
-#cloaking span {
+#cloaking span,
+#weapon span {
 	display: block;
 	width: 100%;
 	height: 20px;
@@ -260,15 +269,23 @@ body {
 	background: #eee;
 	background: linear-gradient(to bottom, rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 51%,rgba(245,247,249,1) 100%);
 }
-#shipHealth span:before,
-#cloaking span:before {
-	content: "CLOAK";
+#weapon span {
+	background: coral;
+	xbackground: linear-gradient(to bottom, rgba(191,210,85,1) 0%,rgba(142,185,42,1) 50%,rgba(114,170,0,1) 51%,rgba(158,203,45,1) 100%);
+}
+#hud span:before {
 	position: absolute;
 	top: 4px;
 	left: 6px;
 }
+#cloaking span:before {
+	content: "CLOAK";
+}
 #shipHealth span:before {
 	content: "HULL";
+}
+#weapon span:before {
+	content: "WEAPON";
 }
 #debug {
 	top: 50%;

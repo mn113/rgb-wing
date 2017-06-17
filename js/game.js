@@ -14,6 +14,15 @@ $(function() {
 		health: 100,
 		cloaked: false,
 		cloaking: 100,
+		weapon: 'blaster',
+		weaponEnergy: 100,
+		weaponRecharge: setInterval(function() {
+			ship.weaponEnergy += 5;
+			if (ship.weaponEnergy >= 100) {
+				ship.weaponEnergy = 100;
+			}
+			$("#weapon span").css("width", ship.weaponEnergy+"%");
+		}, 500),
 
 		alterColour: function(channel, delta) {
 			this.colour[channel] += delta;
@@ -89,10 +98,16 @@ $(function() {
 		},
 
 		fireWeapon: function() {
-			var origin = this.el.position();
-			//console.log("Zap!", origin);
-			new Audio("sfx/sfx_wpn_laser6.wav").play();
-			new Blast(origin);
+			if (ship.weaponEnergy >= 15) {
+				this.weaponEnergy -= 15;
+				var origin = this.el.position();
+				//console.log("Zap!", origin);
+				new Audio("sfx/sfx_wpn_laser6.wav").play();
+				new Blast(origin);
+				if (this.weaponEnergy < 0) this.weaponEnergy = 0;
+				$("#weapon span").css("width", this.weaponEnergy+"%");
+			}
+			// can't fire sound?
 		},
 
 		takeDamage: function(damage) {
@@ -343,7 +358,7 @@ $(function() {
 			$("#s2").css("background-color", oppositeColour.spin(30).toString());
 		}
 		new Asteroid().drift();
-	}, 2000);
+	}, 12000);
 
 	// Key listeners:
 	var keyState = {};
